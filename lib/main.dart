@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/features/landing/screens/landing_scrren.dart';
 import 'package:whatsapp_clone/firebase_options.dart';
+import 'package:whatsapp_clone/router.dart';
 import 'package:whatsapp_clone/screens/mobile_layout_screen.dart';
 import 'package:whatsapp_clone/screens/web_layout_screen.dart';
 import 'package:whatsapp_clone/utils/responsive_layout.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: backgroundColor,
       ),
+      onGenerateRoute: (settings) => generateRoute(settings),
       home: const LandingScreen(),
     );
   }

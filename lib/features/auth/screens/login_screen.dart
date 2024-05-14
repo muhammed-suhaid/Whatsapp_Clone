@@ -75,10 +75,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   width: size.width * 0.7,
                   child: TextField(
                     controller: phoneController,
+                    //maxLength: 10,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
                       hintText: 'phone number',
-                      
+                      // counterText: '',
                     ),
                   ),
                 ),
@@ -92,7 +93,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: sendPhoneNumber,
               ),
             ),
-            const SizedBox(height:15),
+            const SizedBox(height: 15),
           ],
         ),
       ),

@@ -43,16 +43,13 @@ class OTPScreen extends ConsumerWidget {
                   counterText: '',
                   hintStyle: TextStyle(
                     fontSize: 30,
-                    
                   ),
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   if (value.length == 6) {
-                    print('Verifying OTP');
                     verifyOTP(ref, context, value.trim());
                   }
-                  print('This function runned');
                 },
               ),
             ),

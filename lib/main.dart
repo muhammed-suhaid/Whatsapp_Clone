@@ -16,9 +16,7 @@ void main() async {
   );
 
   runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const ProviderScope(child: MyApp()),
   );
 }
 

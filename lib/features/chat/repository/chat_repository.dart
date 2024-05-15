@@ -1,10 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import 'package:whatsapp_clone/common/enums/message_enum.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
+import 'package:whatsapp_clone/models/message.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
+
+final chatRepositoryProvider = Provider(
+  (ref) => ChatRepository(
+    firestore: FirebaseFirestore.instance,
+    auth: FirebaseAuth.instance,
+  ),
+);
 
 class ChatRepository {
   final FirebaseFirestore firestore;
@@ -15,7 +25,7 @@ class ChatRepository {
     required this.auth,
   });
 
-  void _sendDataToContactsSubcollection(
+  void _saveDataToContactsSubcollection(
     UserModel senderUserData,
     UserModel receiverUserData,
     String text,
@@ -65,7 +75,41 @@ class ChatRepository {
     required String userName,
     required String receiverUserName,
     required MessageEnum messageType,
-  }) async {}
+  }) async {
+    final message = Message(
+      senderId: auth.currentUser!.uid,
+      receiverId: receiverUserId,
+      text: text,
+      type: messageType,
+      timeSent: timeSent,
+      messageId: messageId,
+      isSeen: false,
+    );
+
+    //--- for receiver
+    await firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('chats')
+        .doc(receiverUserId)
+        .collection('messages')
+        .doc(messageId)
+        .set(
+          message.toMap(),
+        );
+
+    //--- for receiver
+    await firestore
+        .collection('users')
+        .doc(receiverUserId)
+        .collection('chats')
+        .doc(auth.currentUser!.uid)
+        .collection('messages')
+        .doc(messageId)
+        .set(
+          message.toMap(),
+        );
+  }
 
   void sendTextMessage({
     required BuildContext context,
@@ -81,7 +125,9 @@ class ChatRepository {
           await firestore.collection('users').doc(receiverUserId).get();
       receiverUserData = UserModel.fromMap(userDataMap.data()!);
 
-      _sendDataToContactsSubcollection(
+      var messageId = const Uuid().v1();
+
+      _saveDataToContactsSubcollection(
         senderUser,
         receiverUserData,
         text,
@@ -89,7 +135,15 @@ class ChatRepository {
         receiverUserId,
       );
 
-      _saveMesssageToMessageSubcollection();
+      _saveMesssageToMessageSubcollection(
+        receiverUserId: receiverUserId,
+        text: text,
+        timeSent: timeSent,
+        messageId: messageId,
+        userName: senderUser.name,
+        receiverUserName: receiverUserData.name,
+        messageType: MessageEnum.text,
+      );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }

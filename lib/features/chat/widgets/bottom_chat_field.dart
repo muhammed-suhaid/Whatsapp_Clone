@@ -32,28 +32,25 @@ class _BottomChatFieldState extends State<BottomChatField> {
             decoration: InputDecoration(
               filled: true,
               fillColor: mobileChatBoxColor,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  width: 100,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.emoji_emotions,
-                          color: Colors.grey,
-                        ),
+              prefixIcon: SizedBox(
+                width: 100,
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.grey,
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.gif,
-                          color: Colors.grey,
-                        ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.gif,
+                        color: Colors.grey,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               suffixIcon: const SizedBox(

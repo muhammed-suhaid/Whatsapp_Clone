@@ -55,6 +55,26 @@ class ChatRepository {
     });
   }
 
+  Stream<List<Message>> getChatStream(String receiverUserId) {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('chats')
+        .doc(receiverUserId)
+        .collection('messages')
+        .orderBy('timeSent')
+        .snapshots()
+        .map((event) {
+      List<Message> messages = [];
+
+      for (var message in event.docs) {
+        messages.add(Message.fromMap(message.data()));
+      }
+
+      return messages;
+    });
+  }
+
   void _saveDataToContactsSubcollection(
     UserModel senderUserData,
     UserModel receiverUserData,

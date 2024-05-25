@@ -65,4 +65,26 @@ class ChatController {
           ),
         );
   }
+
+  void sendGIFMessage(
+    BuildContext context,
+    String gifUrl,
+    String receiverUserId,
+  ) {
+//https://giphy.com/gifs/rightnow-q60r4CT1QU7hqjX9iU
+//https://i.giphy.com/media/q60r4CT1QU7hqjX9iU/200.gif
+
+    int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
+    String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
+    String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
+
+    ref.read(userDataAuthProvider).whenData(
+          (value) => chatRepository.sendGIFMessage(
+            context: context,
+            gifUrl: newGifUrl,
+            receiverUserId: receiverUserId,
+            senderUser: value!,
+          ),
+        );
+  }
 }

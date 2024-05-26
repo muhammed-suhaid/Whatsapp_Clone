@@ -64,6 +64,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
       }
       if (isRecording) {
         await _soundRecorder!.stopRecorder();
+        sendFileMessage(File(path), MessageEnum.audio);
       } else {
         await _soundRecorder!.startRecorder(
           toFile: path,

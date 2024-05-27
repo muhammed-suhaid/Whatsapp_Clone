@@ -95,4 +95,16 @@ class ChatController {
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
   }
+
+  void setChatMessagesSeen(
+    BuildContext context,
+    String receiverUserId,
+    String messageId,
+  ) {
+    chatRepository.setChatMessagesSeen(
+      context,
+      receiverUserId,
+      messageId,
+    );
+  }
 }

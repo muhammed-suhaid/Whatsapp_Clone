@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
+import 'package:whatsapp_clone/features/chat/widgets/display_text_image_gif.dart';
 
 class MessageReplyPreview extends ConsumerWidget {
   const MessageReplyPreview({super.key});
@@ -17,6 +18,13 @@ class MessageReplyPreview extends ConsumerWidget {
       width: 350,
       height: 60,
       padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
       child: Column(
         children: [
           Row(
@@ -40,11 +48,9 @@ class MessageReplyPreview extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: Text(
-              messageReply.message,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+            child: DisaplayTextImageGif(
+              message: messageReply.message,
+              type: messageReply.messageEnum,
             ),
           ),
         ],

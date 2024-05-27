@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/enums/message_enum.dart';
+import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/chat/repository/chat_repository.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
@@ -38,12 +39,14 @@ class ChatController {
     String text,
     String receiverUserId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
             context: context,
             text: text,
             receiverUserId: receiverUserId,
             senderUser: value!,
+            messageReply: messageReply,
           ),
         );
   }
@@ -54,6 +57,7 @@ class ChatController {
     String receiverUserId,
     MessageEnum messageEnum,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendFileMessage(
             context: context,
@@ -62,6 +66,7 @@ class ChatController {
             senderUserData: value!,
             messageEnum: messageEnum,
             ref: ref,
+            messageReply: messageReply,
           ),
         );
   }
@@ -71,8 +76,7 @@ class ChatController {
     String gifUrl,
     String receiverUserId,
   ) {
-//https://giphy.com/gifs/rightnow-q60r4CT1QU7hqjX9iU
-//https://i.giphy.com/media/q60r4CT1QU7hqjX9iU/200.gif
+    final messageReply = ref.read(messageReplyProvider);
 
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
@@ -84,6 +88,7 @@ class ChatController {
             gifUrl: newGifUrl,
             receiverUserId: receiverUserId,
             senderUser: value!,
+            messageReply: messageReply,
           ),
         );
   }

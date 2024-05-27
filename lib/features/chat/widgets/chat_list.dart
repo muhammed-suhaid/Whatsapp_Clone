@@ -90,7 +90,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                   true,
                   messageData.type,
                 ),
-                isSeen:messageData.isSeen,
+                isSeen: messageData.isSeen,
               );
             }
             return SenderMessageCard(

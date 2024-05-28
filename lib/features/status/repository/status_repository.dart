@@ -43,7 +43,7 @@ class StatusRepository {
           .read(commonFirebaseStorageRepositoryProvider)
           .storeFileToFirebase(
             '/status/$statusId$uid',
-            statusImage, 
+            statusImage,
           );
       List<Contact> contacts = [];
       if (await FlutterContacts.requestPermission()) {
@@ -107,8 +107,8 @@ class StatusRepository {
 
       await firestore.collection('status').doc(statusId).set(status.toMap());
     } catch (e) {
-      print(e);
-      //showSnackBar(context: context, content: e.toString());
+      debugPrint(e.toString());
+      showSnackBar(context: context, content: e.toString());
     }
   }
 }

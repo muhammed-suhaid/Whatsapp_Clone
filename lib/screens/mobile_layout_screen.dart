@@ -113,8 +113,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             } else {
               File? pickedImage = await pickImageFromGallery(context);
               if (pickedImage != null) {
-                Navigator.pushNamed(
-                  context,
+                Navigator.of(context).pushNamed(
                   ConfirmStatusScreen.routeName,
                   arguments: pickedImage,
                 );

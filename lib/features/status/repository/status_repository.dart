@@ -23,7 +23,6 @@ class StatusRepository {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
   final ProviderRef ref;
-
   StatusRepository({
     required this.firestore,
     required this.auth,
@@ -31,20 +30,20 @@ class StatusRepository {
   });
 
   void uploadStatus({
-    required BuildContext context,
     required String username,
     required String profilePic,
     required String phoneNumber,
     required File statusImage,
+    required BuildContext context,
   }) async {
     try {
       var statusId = const Uuid().v1();
       String uid = auth.currentUser!.uid;
-      String imageUrl = await ref
+      String imageurl = await ref
           .read(commonFirebaseStorageRepositoryProvider)
           .storeFileToFirebase(
             '/status/$statusId$uid',
-            statusImage,
+            statusImage, 
           );
       List<Contact> contacts = [];
       if (await FlutterContacts.requestPermission()) {
@@ -58,7 +57,10 @@ class StatusRepository {
             .collection('users')
             .where(
               'phoneNumber',
-              isEqualTo: contacts[i].phones[0].number.replaceAll(' ', ''),
+              isEqualTo: contacts[i].phones[0].number.replaceAll(
+                    ' ',
+                    '',
+                  ),
             )
             .get();
 
@@ -71,29 +73,25 @@ class StatusRepository {
       List<String> statusImageUrls = [];
       var statusesSnapshot = await firestore
           .collection('status')
-          .where('uid', isEqualTo: auth.currentUser!.uid)
           .where(
-            'createdAt',
-            isLessThan: DateTime.now().subtract(
-              const Duration(hours: 24),
-            ),
+            'uid',
+            isEqualTo: auth.currentUser!.uid,
           )
           .get();
 
       if (statusesSnapshot.docs.isNotEmpty) {
-        Status status = Status.fromMap(
-          statusesSnapshot.docs[0].data(),
-        );
+        Status status = Status.fromMap(statusesSnapshot.docs[0].data());
         statusImageUrls = status.photoUrl;
-        statusImageUrls.add(imageUrl);
-
+        statusImageUrls.add(imageurl);
         await firestore
             .collection('status')
             .doc(statusesSnapshot.docs[0].id)
-            .update({'photoUrl': statusImageUrls});
+            .update({
+          'photoUrl': statusImageUrls,
+        });
         return;
       } else {
-        statusImageUrls = [imageUrl];
+        statusImageUrls = [imageurl];
       }
 
       Status status = Status(
@@ -109,7 +107,8 @@ class StatusRepository {
 
       await firestore.collection('status').doc(statusId).set(status.toMap());
     } catch (e) {
-      showSnackBar(context: context, content: e.toString());
+      print(e);
+      //showSnackBar(context: context, content: e.toString());
     }
   }
 }

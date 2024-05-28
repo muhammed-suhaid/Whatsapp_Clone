@@ -7,7 +7,6 @@ class Status {
   final String profilePic;
   final String statusId;
   final List<String> whoCanSee;
-
   Status({
     required this.uid,
     required this.username,
@@ -19,29 +18,29 @@ class Status {
     required this.whoCanSee,
   });
 
-  factory Status.fromMap(Map<String, dynamic> map) {
-    return Status(
-      uid: map['uid'],
-      username: map['username'],
-      phoneNumber: map['phoneNumber'],
-      photoUrl: List<String>.from(map['photoUrl']),
-      createdAt: DateTime.parse(map['createdAt']),
-      profilePic: map['profilePic'],
-      statusId: map['statusId'],
-      whoCanSee: List<String>.from(map['whoCanSee']),
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'username': username,
       'phoneNumber': phoneNumber,
       'photoUrl': photoUrl,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt.millisecondsSinceEpoch,
       'profilePic': profilePic,
       'statusId': statusId,
       'whoCanSee': whoCanSee,
     };
+  }
+
+  factory Status.fromMap(Map<String, dynamic> map) {
+    return Status(
+      uid: map['uid'] ?? '',
+      username: map['username'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      photoUrl: List<String>.from(map['photoUrl']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']), 
+      profilePic: map['profilePic'] ?? '',
+      statusId: map['statusId'] ?? '',
+      whoCanSee: List<String>.from(map['whoCanSee']),
+    );
   }
 }

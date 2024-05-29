@@ -5,16 +5,19 @@ import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/chat/widgets/bottom_chat_field.dart';
 import 'package:whatsapp_clone/features/chat/widgets/chat_list.dart';
+import 'package:whatsapp_clone/models/user_model.dart';
 
 class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
 
   final String name;
   final String uid;
+  final bool isGroupChat;
   const MobileChatScreen({
     super.key,
     required this.name,
     required this.uid,
+    required this.isGroupChat,
   });
 
   @override
@@ -22,27 +25,29 @@ class MobileChatScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarColor,
-        title: StreamBuilder(
-          stream: ref.read(authControllerProvider).userDataById(uid),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingScreen();
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name),
-                Text(
-                  snapshot.data!.isOnline ? 'online' : 'offline',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+        title: isGroupChat
+            ? Text(name)
+            : StreamBuilder<UserModel>(
+                stream: ref.read(authControllerProvider).userDataById(uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const LoadingScreen();
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name),
+                      Text(
+                        snapshot.data!.isOnline ? 'online' : 'offline',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
         centerTitle: false,
         actions: [
           IconButton(

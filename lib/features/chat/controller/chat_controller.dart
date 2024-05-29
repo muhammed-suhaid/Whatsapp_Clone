@@ -21,37 +21,42 @@ final chatControllerProvider = Provider((ref) {
 class ChatController {
   final ChatRepository chatRepository;
   final ProviderRef ref;
-
   ChatController({
     required this.chatRepository,
     required this.ref,
   });
 
   Stream<List<ChatContact>> chatContacts() {
-    return chatRepository.getChatContact();
+    return chatRepository.getChatContacts();
   }
 
   Stream<List<Group>> chatGroups() {
     return chatRepository.getChatGroups();
   }
 
-  Stream<List<Message>> chatStream(String receiverUserId) {
-    return chatRepository.getChatStream(receiverUserId);
+  Stream<List<Message>> chatStream(String recieverUserId) {
+    return chatRepository.getChatStream(recieverUserId);
+  }
+
+  Stream<List<Message>> groupChatStream(String groupId) {
+    return chatRepository.getGroupChatStream(groupId);
   }
 
   void sendTextMessage(
     BuildContext context,
     String text,
-    String receiverUserId,
+    String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
             context: context,
             text: text,
-            receiverUserId: receiverUserId,
+            recieverUserId: recieverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
@@ -60,19 +65,21 @@ class ChatController {
   void sendFileMessage(
     BuildContext context,
     File file,
-    String receiverUserId,
+    String recieverUserId,
     MessageEnum messageEnum,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendFileMessage(
             context: context,
             file: file,
-            receiverUserId: receiverUserId,
+            recieverUserId: recieverUserId,
             senderUserData: value!,
             messageEnum: messageEnum,
             ref: ref,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
@@ -81,34 +88,35 @@ class ChatController {
   void sendGIFMessage(
     BuildContext context,
     String gifUrl,
-    String receiverUserId,
+    String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
-
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
     String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
-    String newGifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
+    String newgifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
 
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendGIFMessage(
             context: context,
-            gifUrl: newGifUrl,
-            receiverUserId: receiverUserId,
+            gifUrl: newgifUrl,
+            recieverUserId: recieverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.notifier).update((state) => null);
   }
 
-  void setChatMessagesSeen(
+  void setChatMessageSeen(
     BuildContext context,
-    String receiverUserId,
+    String recieverUserId,
     String messageId,
   ) {
-    chatRepository.setChatMessagesSeen(
+    chatRepository.setChatMessageSeen(
       context,
-      receiverUserId,
+      recieverUserId,
       messageId,
     );
   }

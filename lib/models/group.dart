@@ -25,7 +25,7 @@ class Group {
       'lastMessage': lastMessage,
       'groupPic': groupPic,
       'membersUid': membersUid,
-      'timeSent': timeSent.toIso8601String(),
+     'timeSent': timeSent.millisecondsSinceEpoch,
     };
   }
 
@@ -37,7 +37,7 @@ class Group {
       lastMessage: map['lastMessage'],
       groupPic: map['groupPic'],
       membersUid: List<String>.from(map['membersUid']),
-      timeSent: DateTime.parse(map['timeSent']),
+       timeSent: DateTime.fromMillisecondsSinceEpoch(map['timeSent']),
     );
   }
 }

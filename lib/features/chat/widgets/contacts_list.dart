@@ -27,6 +27,7 @@ class ContactsList extends ConsumerWidget {
 
                   return ListView.builder(
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       var groupData = snapshot.data![index];

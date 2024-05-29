@@ -13,9 +13,11 @@ import 'package:whatsapp_clone/features/chat/widgets/sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final bool isGroupChat;
 
   const ChatList({
     required this.receiverUserId,
+    required this.isGroupChat,
     super.key,
   });
 
@@ -49,8 +51,11 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Message>>(
-      stream:
-          ref.read(chatControllerProvider).chatStream(widget.receiverUserId),
+      stream: widget.isGroupChat
+          ? ref
+              .read(chatControllerProvider)
+              .groupChatStream(widget.receiverUserId)
+          : ref.read(chatControllerProvider).chatStream(widget.receiverUserId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingScreen();
@@ -69,7 +74,7 @@ class _ChatListState extends ConsumerState<ChatList> {
             if (!messageData.isSeen &&
                 messageData.receiverId ==
                     FirebaseAuth.instance.currentUser!.uid) {
-              ref.read(chatControllerProvider).setChatMessagesSeen(
+              ref.read(chatControllerProvider).setChatMessageSeen(
                     context,
                     widget.receiverUserId,
                     messageData.messageId,

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
+import 'package:whatsapp_clone/features/call/screens/call_screen.dart';
 import 'package:whatsapp_clone/models/call.dart';
 
 final callRepositoryProvider = Provider(
@@ -38,6 +39,17 @@ class CallRepository {
           .collection('call')
           .doc(senderCallData.receiverId)
           .set(receiverCallData.toMap());
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CallScreen(
+            channelId: senderCallData.callId,
+            call: senderCallData,
+            isGroupChat: false,
+          ),
+        ),
+      );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }

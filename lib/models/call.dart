@@ -19,7 +19,7 @@ class Call {
     required this.hasDialed,
   });
 
-  factory Call.fromJson(Map<String, dynamic> json) {
+  factory Call.fromMap(Map<String, dynamic> json) {
     return Call(
       callerId: json['callerId'],
       callerName: json['callerName'],

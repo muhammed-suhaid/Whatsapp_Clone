@@ -8,7 +8,7 @@ WhatsApp Clone is a powerful messaging application which is replica WhatsApp. It
 1. **Personal Messaging** : Engage in private conversations with individual contacts through personal messages, ensuring secure and intimate communication.
 2. **Group Chats** : Create or join group chats with multiple contacts, facilitating collaboration, coordination, and camaraderie among users.
 3. **Status Updates** : Share your thoughts, experiences, and multimedia content with your contacts through status updates, providing glimpses into your daily life.
-4. **Video Calls** : Initiate video calls with your contacts for face-to-face communication, fostering closer connections and more meaningful interactions.
+4. **Video Calls** : Initiate high-quality video calls with your contacts using Agora, fostering closer connections and more meaningful interactions.
 5. **Online/Offline Indicators** : Stay informed about the availability of your contacts with real-time online/offline indicators, enabling timely communication and engagement.
 6. **Message Replying** : Reply to specific messages within a chat thread, maintaining context and clarity in conversations, especially in busy group chats.
 7. **Message Seen Feature** : now when your messages have been read with message seen feature, ensuring better communication transparency and understanding.
@@ -20,12 +20,15 @@ WhatsApp Clone is a powerful messaging application which is replica WhatsApp. It
    - Emojis: Use emojis to express emotions and add personality to your messages.
    - GIFs: Share animated GIFs to make your chats more lively and fun.
 
-### Technology Stack:
+### Technology Stack :
+
 * **Flutter Framework** : Provides a beautiful and responsive UI across both iOS and Android platforms, ensuring a consistent user experience.
 * **Riverpod** : Used for state management, Riverpod ensures efficient and scalable state handling, making the app robust and maintainable.
+* **Agora** : Powers high-quality video calls, offering a seamless and reliable video calling experience.
 * **Firebase Backend** :
   - Firebase Authentication :  Enables secure user authentication, including phone number verification, ensuring users can register and log in safely.
   - Firebase Firestore :  Utilizes Firestore for real-time database management, offering seamless data synchronization across devices.
   - Firebase Storage : Manages the storage and retrieval of multimedia files like photos and videos, ensuring efficient and secure media handling.
 
-
+ ### Packages Used :
+WhatsApp Clone leverages a variety of Flutter packages to enhance functionality and user experience. These packages support features such as image and video picking, emoji and GIF selection, audio playback, permissions handling, and more, ensuring a comprehensive and robust messaging platform.

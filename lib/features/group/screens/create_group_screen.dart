@@ -1,25 +1,42 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
+import 'package:whatsapp_clone/features/group/controller/group_controller.dart';
 import 'package:whatsapp_clone/features/group/widgets/select_contacts_group.dart';
 
-class CreateGroupScreen extends StatefulWidget {
+class CreateGroupScreen extends ConsumerStatefulWidget {
   static const routeName = '/create-group';
   const CreateGroupScreen({super.key});
 
   @override
-  State<CreateGroupScreen> createState() => _CreateGroupScreenState();
+  ConsumerState<CreateGroupScreen> createState() => _CreateGroupScreenState();
 }
 
-class _CreateGroupScreenState extends State<CreateGroupScreen> {
+class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   final TextEditingController groupNameController = TextEditingController();
   File? image;
 
   void selectImage() async {
     image = await pickImageFromGallery(context);
     setState(() {});
+  }
+
+  void createGroup() {
+    print('inside button');
+    if (groupNameController.text.trim().isNotEmpty && image != null) {
+      print('inside if button');
+      ref.read(groupControllerProvider).createGroup(
+            context,
+            groupNameController.text.trim(),
+            image!,
+            ref.read(selecedGroupContacts),
+          );
+      ref.read(selecedGroupContacts.notifier).update((state) => []);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -85,7 +102,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: createGroup,
         backgroundColor: tabColor,
         shape: const CircleBorder(),
         child: const Icon(Icons.done),

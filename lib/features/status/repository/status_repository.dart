@@ -65,7 +65,8 @@ class StatusRepository {
             )
             .get();
 
-        if (userDataFirebase.docs.isNotEmpty) {
+        if (userDataFirebase.docs.isNotEmpty &&
+            userDataFirebase.docs[0].exists) {
           var userData = UserModel.fromMap(userDataFirebase.docs[0].data());
           uidWhoCanSee.add(userData.uid);
         }

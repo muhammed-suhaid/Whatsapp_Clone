@@ -50,7 +50,7 @@ class CallController {
         hasDialed: true,
       );
 
-      Call recieverCallData = Call(
+      Call receiverCallData = Call(
         callerId: auth.currentUser!.uid,
         callerName: value.name,
         callerPic: value.profilePic,
@@ -61,11 +61,19 @@ class CallController {
         hasDialed: false,
       );
 
-      callRepository.makeCall(
-        context,
-        senderCallData,
-        recieverCallData,
-      );
+      if (isGroupChat) {
+        callRepository.makeGroupCall(
+          context,
+          senderCallData,
+          receiverCallData,
+        );
+      } else {
+        callRepository.makeCall(
+          context,
+          senderCallData,
+          receiverCallData,
+        );
+      }
     });
   }
 
@@ -75,6 +83,18 @@ class CallController {
     String receiverId,
   ) {
     callRepository.endCall(
+      context,
+      callerId,
+      receiverId,
+    );
+  }
+
+  void endGroupCall(
+    BuildContext context,
+    String callerId,
+    String receiverId,
+  ) {
+    callRepository.endGroupCall(
       context,
       callerId,
       receiverId,

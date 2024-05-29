@@ -57,11 +57,17 @@ class _CallScreenState extends ConsumerState<CallScreen> {
                     disconnectButtonChild: IconButton(
                       onPressed: () async {
                         await client!.engine.leaveChannel();
-                        ref.read(callControllerProvider).endCall(
-                              context,
-                              widget.call.callerId,
-                              widget.call.receiverId,
-                            );
+                        widget.isGroupChat
+                            ? ref.read(callControllerProvider).endGroupCall(
+                                  context,
+                                  widget.call.callerId,
+                                  widget.call.receiverId,
+                                )
+                            : ref.read(callControllerProvider).endCall(
+                                  context,
+                                  widget.call.callerId,
+                                  widget.call.receiverId,
+                                );
                         Navigator.pop(context);
                       },
                       icon: const Icon(

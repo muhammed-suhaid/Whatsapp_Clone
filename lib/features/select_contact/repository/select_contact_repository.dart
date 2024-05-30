@@ -40,6 +40,7 @@ class SelectContactRrepository {
 
         String selectedPhoneNum =
             selectedContact.phones[0].number.replaceAll(' ', '');
+            print(selectedPhoneNum);
 
         if (selectedPhoneNum == userData.phoneNumber) {
           isFound = true;
@@ -49,6 +50,8 @@ class SelectContactRrepository {
             arguments: {
               'name': userData.name,
               'uid': userData.uid,
+              'profilePic':userData.profilePic, 
+              'isGroupChat':false, 
             },
           );
         }
